@@ -1,0 +1,4 @@
+﻿  local-packet.cpp
+C:\Users\Santiago\source\repos\network-sniffer-cli\network-sniffer-cli\local-packet.cpp(26,49): warning C4244: 'argumento': conversión de 'std::streamoff' a 'const unsigned int'; posible pérdida de datos
+C:\Users\Santiago\source\repos\network-sniffer-cli\network-sniffer-cli\local-packet.cpp(69,36): warning C4018: '<': no coinciden signed/unsigned
+  network-sniffer-cli.vcxproj -> C:\Users\Santiago\source\repos\network-sniffer-cli\Debug\network-sniffer-cli.exe
