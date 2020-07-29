@@ -1,12 +1,12 @@
 #include "local-packet.h"
 
-void LocalPacket::ShowPacketData()
+void LocalPacket::PacketDataInitialization()
 {
 	system("cls");
 	std::ifstream file(files[selectedFile].path(), std::ios::binary | std::ios::ate);
 
 	if (file.is_open()) {
-		status = "Processing data";
+		status = "Packet readed";
 
 		std::cout << "\n File name: " + files[selectedFile].path().filename().string() + "\n";
 		std::cout << " Status: ";
@@ -14,7 +14,7 @@ void LocalPacket::ShowPacketData()
 		std::cout << status;
 		SetConsoleTextAttribute(STDOUT_HANDLE, 7);
 		std::cout << "\n File size: " + std::to_string(files[selectedFile].file_size()) + " bytes\n";
-		std::cout << " Extension: " + files[selectedFile].path().extension().string() + "\n";
+		std::cout << " Extension: " + files[selectedFile].path().extension().string() + "\n\n";
 
 		if (packetArrayBytes.size())
 			packetArrayBytes.clear();
@@ -37,7 +37,7 @@ void LocalPacket::ShowPacketData()
 				packetArrayBits.push_back(f_temporalBits[j]);
 		}
 
-		//Show_Packet(f_packetName);
+		PacketShowData();
 
 		std::cin.get();
 		status = "Finished";
@@ -52,6 +52,11 @@ void LocalPacket::ShowPacketData()
 
 }
 
+void LocalPacket::PacketShowData()
+{
+	Ethernet(packetArrayBytes, packetArrayBits);
+}
+
 LocalPacket::LocalPacket()
 	: selectedFile(0U), packetArrayBytes{}, packetArrayBits{}, files{}, status("Initializating")
 {}
@@ -64,9 +69,12 @@ LocalPacket::LocalPacket(const std::vector<std::filesystem::directory_entry>& _f
 			files.emplace_back(dirEntry);
 }
 
+LocalPacket::~LocalPacket() 
+{}
+
 void LocalPacket::ShowFiles()
 {
-	for (int fileIndex = 0; fileIndex < files.size(); ++fileIndex) {
+	for (unsigned int fileIndex = 0; fileIndex < files.size(); ++fileIndex) {
 		if (fileIndex == selectedFile) {
 			SetConsoleTextAttribute(STDOUT_HANDLE, 240);
 			std::cout << "> " + files[fileIndex].path().filename().string() + " <\n";
@@ -100,6 +108,6 @@ void LocalPacket::SelectorEvent(int _selectorValue)
 			--selectedFile;
 	}
 	else if (_selectorValue == ENTER) {
-		ShowPacketData();
+		PacketDataInitialization();
 	}
 }

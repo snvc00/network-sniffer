@@ -10,7 +10,9 @@ int main()
 	do {
 		system("cls");
 
+		SetConsoleTextAttribute(STDOUT_HANDLE, 11);
 		std::cout << "\n\t\tNetwork Sniffer CLI\n\n";
+		SetConsoleTextAttribute(STDOUT_HANDLE, 7);
 		std::cout << " Select an option:\n\n";
 
 		interfaceController.ShowOptions();

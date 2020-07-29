@@ -33,6 +33,10 @@ HMI::HMI()
 	  }
 {}
 
+HMI::~HMI()
+{
+}
+
 void HMI::ShowOptions()
 {
 	for (int optionIndex = 0; optionIndex < OPTIONS_SIZE; ++optionIndex) {
@@ -74,7 +78,9 @@ bool HMI::IsOnExecution()
 void HMI::OpenLocal()
 {
 	system("cls");
+	SetConsoleTextAttribute(STDOUT_HANDLE, 11);
 	std::cout << "\n OPEN FROM LOCAL FILE\n\n";
+	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
 
 	std::vector<std::filesystem::directory_entry> files;
 
@@ -90,7 +96,9 @@ void HMI::OpenLocal()
 		do {
 			system("cls");
 
+			SetConsoleTextAttribute(STDOUT_HANDLE, 11);
 			std::cout << "\n OPEN FROM LOCAL FILE\n\n";
+			SetConsoleTextAttribute(STDOUT_HANDLE, 7);
 			std::cout << " Select a file:\n\n";
 
 			localPacket.ShowFiles();
@@ -117,7 +125,9 @@ void HMI::OpenLocal()
 void HMI::OpenAdapter()
 {
 	system("cls");
+	SetConsoleTextAttribute(STDOUT_HANDLE, 11);
 	std::cout << "\n OPEN FROM NETWORK ADAPTER\n\n";
+	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
 
 	system("pause");
 }

@@ -143,10 +143,13 @@
     <ClCompile Include="hmi.cpp" />
     <ClCompile Include="local-packet.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="packet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hmi.h" />
     <ClInclude Include="local-packet.h" />
+    <ClInclude Include="packet-segmentation-enums.h" />
+    <ClInclude Include="packet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
