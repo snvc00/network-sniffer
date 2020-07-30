@@ -1,4 +1,4 @@
-#include "local-packet.h"
+#include "local_packet.h"
 
 void LocalPacket::PacketDataInitialization()
 {
@@ -10,9 +10,9 @@ void LocalPacket::PacketDataInitialization()
 
 		std::cout << "\n File name: " + files[selectedFile].path().filename().string() + "\n";
 		std::cout << " Status: ";
-		SetConsoleTextAttribute(STDOUT_HANDLE, 10);
+		SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FORELIME);
 		std::cout << status;
-		SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+		SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 		std::cout << "\n File size: " + std::to_string(files[selectedFile].file_size()) + " bytes\n";
 		std::cout << " Extension: " + files[selectedFile].path().extension().string() + "\n\n";
 
@@ -28,26 +28,24 @@ void LocalPacket::PacketDataInitialization()
 		file.seekg(0, std::ios::beg);
 		file.read((char*)&packetArrayBytes[0], position);
 
-		std::string f_temporalBits;
+		std::string temporalBits;
 
 		for (unsigned int i = 14; i < packetArrayBytes.size(); ++i) {
-			f_temporalBits = std::bitset<8>(packetArrayBytes[i]).to_string();
+			temporalBits = std::bitset<8>(packetArrayBytes[i]).to_string();
 
 			for (int j = 0; j < 8; ++j)
-				packetArrayBits.push_back(f_temporalBits[j]);
+				packetArrayBits.push_back(temporalBits[j]);
 		}
 
 		PacketShowData();
-
-		std::cin.get();
 		status = "Finished";
 	}
 	else
 	{
-		SetConsoleTextAttribute(STDOUT_HANDLE, 12);
+		SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FORERED);
 		std::cout << "\n ERROR: " + files[selectedFile].path().filename().string() + " is not available,\n please select another file";
 		std::cin.get();
-		SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+		SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 	}
 
 }
@@ -76,9 +74,9 @@ void LocalPacket::ShowFiles()
 {
 	for (unsigned int fileIndex = 0; fileIndex < files.size(); ++fileIndex) {
 		if (fileIndex == selectedFile) {
-			SetConsoleTextAttribute(STDOUT_HANDLE, 240);
+			SetConsoleTextAttribute(STDOUT_HANDLE, BACKWHITE_FOREBLACK);
 			std::cout << "> " + files[fileIndex].path().filename().string() + " <\n";
-			SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+			SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 		}
 		else {
 			std::cout << "  " + files[fileIndex].path().filename().string() + "\n";
