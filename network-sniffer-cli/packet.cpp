@@ -25,9 +25,9 @@ unsigned char Packet::ByteToChar(const unsigned int byte_position, std::vector<u
 
 void Packet::Ethernet(std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits)
 {
-	SetConsoleTextAttribute(STDOUT_HANDLE, 3);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
 	std::cout << " [Ethernet]\n";
-	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 
 	std::cout << " Destination MAC: ";
 	for (int i = 0; i < DESTINATION_ADRESS_LIMIT; ++i) {
@@ -75,10 +75,10 @@ void Packet::Ethernet(std::vector<unsigned char>& _packetArrayBytes, std::vector
 		break;
 	default:
 		std::cout << type;
-		SetConsoleTextAttribute(STDOUT_HANDLE, 6);
+		SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREYELLOW);
 		std::cout << "\n\n WARNING: Undefined type (Not IPv4, IPv6, ARP or RARP)\n";
 		std::cin.get();
-		SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+		SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 		break;
 	}
 }
@@ -88,9 +88,9 @@ void Packet::IPv4(std::vector<unsigned char>& _packetArrayBytes, std::vector<uns
 	unsigned int version, headerLength, typeOfService[IPV4_TYPE_OF_SERVICE_BYTES], totalLength, identifier, flags[IPV4_FLAGS_BYTES];
 	unsigned int fragmentOffset, timeToLive, protocol, sourceAddress[IPV4_ADDRESS_BYTES], destinationAddress[IPV4_ADDRESS_BYTES];
 
-	SetConsoleTextAttribute(STDOUT_HANDLE, 3);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
 	std::cout << " [IPv4]\n";
-	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 
 	version = BinaryToInteger_256bits(IPV4_VERSION_BEGIN, IPV4_VERSION_END, _packetArrayBits);
 	if (version == IPV4)
@@ -269,9 +269,9 @@ void Packet::ICMPv4(std::vector<unsigned char>& _packetArrayBytes, std::vector<u
 {
 	unsigned int type(0), code(0);
 
-	SetConsoleTextAttribute(STDOUT_HANDLE, 3);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
 	std::cout << " [ICMPv4]\n";
-	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 
 	// Type
 	type = BinaryToInteger_256bits(ICMPV4_TYPE_BEGIN, ICMPV4_TYPE_END, _packetArrayBits);
@@ -384,9 +384,9 @@ void Packet::ARP_RARP(std::vector<unsigned char>& _packetArrayBytes, std::vector
 	unsigned int hardwareType, hardwareAddressLength, protocolAddressLength, opcode;
 	unsigned int sourceAddress[IPV4_ADDRESS_BYTES], destinationAddress[IPV4_ADDRESS_BYTES];
 
-	SetConsoleTextAttribute(STDOUT_HANDLE, 3);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
 	std::cout << " [ARP/RARP]\n";
-	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 
 	// Hardware type
 	hardwareType = BinaryToInteger_256bits(ARP_HARDWARE_TYPE_BEGIN, ARP_HARDWARE_TYPE_END, _packetArrayBits);
@@ -516,9 +516,9 @@ void Packet::IPv6(std::vector<unsigned char>& _packetArrayBytes, std::vector<uns
 	unsigned int version(0), flowLabbel(0), payloadLength(0), nextHeader(0), hopLimit(0);
 	std::string trafficClass;
 
-	SetConsoleTextAttribute(STDOUT_HANDLE, 3);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
 	std::cout << " [IPv6]\n";
-	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 
 	//Version
 	version = BinaryToInteger_256bits(IPV6_VERSION_BEGIN, IPV6_VERSION_END, _packetArrayBits);
@@ -595,9 +595,9 @@ void Packet::ICMPv6(std::vector<unsigned char>& _packetArrayBytes, std::vector<u
 {
 	unsigned int type, code;
 
-	SetConsoleTextAttribute(STDOUT_HANDLE, 3);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
 	std::cout << " [ICMPv6]\n";
-	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 
 	// Type and Code
 	type = BinaryToInteger_256bits(ICMPV6_TYPE_BEGIN, ICMPV6_TYPE_END, _packetArrayBits);
@@ -693,114 +693,448 @@ void Packet::ICMPv6(std::vector<unsigned char>& _packetArrayBytes, std::vector<u
 	std::cout << "\n";
 }
 
-void Packet::TCP(const unsigned int start_bit, const unsigned int& next_protocol, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits)
+void Packet::TCP(const unsigned int _startBit, const unsigned int& next_protocol, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits)
 {
 	unsigned int sourcePort(0), destinationPort(0), sequenceNumber(0), acknowledgement(0);
 	unsigned int dataPosition(0), flags[9], windowSize(0), urgentPointer(0), options(0), currentByte(0);
 	bool dns;
 
-	SetConsoleTextAttribute(STDOUT_HANDLE, 3);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
 	std::cout << " [TCP]\n";
-	SetConsoleTextAttribute(STDOUT_HANDLE, 7);
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
 
 	// Source Port
-	sourcePort = BinaryToInteger_256bits(start_bit, start_bit + TCP_SOURCE_PORT_SIZE, _packetArrayBits);
+	sourcePort = BinaryToInteger_256bits(_startBit, _startBit + TCP_SOURCE_PORT_SIZE, _packetArrayBits);
 	std::cout << " Source Port: " << sourcePort << " --------------\n";
-
-	//review this
 	dns = TPC_UDP_PortCategoryEvaluation(sourcePort);
-	dns = false; // If the source port for any reason is dns, is not going to be printed because this is the source port.
 
 	// Destination Port
-	destinationPort = BinaryToInteger_256bits(start_bit + 16, start_bit + 32, _packetArrayBits);
-
+	destinationPort = BinaryToInteger_256bits(_startBit + TCP_DESTINATION_PORT_BEGIN, _startBit + TCP_DESTINATION_PORT_END, _packetArrayBits);
 	std::cout << " Destination port: " << destinationPort << " --------------\n";
-
 	dns = TPC_UDP_PortCategoryEvaluation(destinationPort);
 
 	std::cout << " --------------------------------------\n";
 
 	// Sequence Number
-	sequenceNumber = BinaryToInteger_256bits(start_bit + 32, start_bit + 64, _packetArrayBits);
+	sequenceNumber = BinaryToInteger_256bits(_startBit + TCP_SEQUENCE_NUMBER_BEGIN, _startBit + TCP_SEQUENCE_NUMBER_END, _packetArrayBits);
 	std::cout << " Sequence number: " << sequenceNumber << std::endl;
 
 	// Acknowledgement
-	acknowledgement = BinaryToInteger_256bits(start_bit + 64, start_bit + 96, _packetArrayBits);
+	acknowledgement = BinaryToInteger_256bits(_startBit + TCP_ACKNOWLEDGEMENT_BEGIN, _startBit + TCP_ACKNOWLEDGEMENT_END, _packetArrayBits);
 	std::cout << " Acknowledgement: " << acknowledgement << std::endl;
 
 	// Data position
-	dataPosition = BinaryToInteger_256bits(start_bit + 96, start_bit + 100, _packetArrayBits);
+	dataPosition = BinaryToInteger_256bits(_startBit + TCP_DATA_POSITION_BEGIN, _startBit + TCP_DATA_POSITION_END, _packetArrayBits);
 	std::cout << " Data position: " << dataPosition << std::endl;
 
-	// Reserved (start_bit + 100, start_bit + 103)
+	// Reserved (_startBit + 100, _startBit + 103)
 
-	// Active flags (start_bit + 103 to start_bit + 112)
-	for (int i = 0; i < 9; ++i) {
-		int current_pos = start_bit + 103 + i;
-
+	// Active flags (_startBit + 103 to _startBit + 112)
+	for (int i = TCP_FLAG_NS; i < TCP_FLAG_SIZE; ++i) {
+		int current_pos = _startBit + TCP_ACTIVE_FLAGS_BEGIN + i;
 		flags[i] = BinaryToInteger_256bits(current_pos, current_pos + 1, _packetArrayBits);
 	}
 
 	std::cout << " Active flags -----------\n";
 
-	if (flags[0])
-		std::cout << "NS\n";
-	if (flags[1])
-		std::cout << "CWR\n";
-	if (flags[2])
-		std::cout << "ECE\n";
-	if (flags[3])
-		std::cout << "URG\n";
-	if (flags[4])
-		std::cout << "ACK\n";
-	if (flags[5])
-		std::cout << "PSH\n";
-	if (flags[6])
-		std::cout << "RST\n";
-	if (flags[7])
-		std::cout << "SYN\n";
-	if (flags[8])
-		std::cout << "FIN\n";
+	if (flags[TCP_FLAG_NS])
+		std::cout << " NS\n";
+	if (flags[TCP_FLAG_CWR])
+		std::cout << " CWR\n";
+	if (flags[TCP_FLAG_ECE])
+		std::cout << " ECE\n";
+	if (flags[TCP_FLAG_URG])
+		std::cout << " URG\n";
+	if (flags[TCP_FLAG_ACK])
+		std::cout << " ACK\n";
+	if (flags[TCP_FLAG_PSH])
+		std::cout << " PSH\n";
+	if (flags[TCP_FLAG_RST])
+		std::cout << " RST\n";
+	if (flags[TCP_FLAG_SYN])
+		std::cout << " SYN\n";
+	if (flags[TCP_FLAG_FIN])
+		std::cout << " FIN\n";
 
 	std::cout << " ----------------------------\n";
 
-	// Window sizwe
-	windowSize = BinaryToInteger_256bits(start_bit + 112, start_bit + 128, _packetArrayBits);
-	std::cout << " Window size: " << windowSize << " octetos\n";
+	// Window size
+	windowSize = BinaryToInteger_256bits(_startBit + TCP_WINDOW_SIZE_BEGIN, _startBit + TCP_WINDOW_SIZE_END, _packetArrayBits);
+	std::cout << " Window size: " << windowSize << " octets\n";
 
 	// Checksum
-	currentByte = (start_bit + 128) / 8;
+	currentByte = (_startBit + TCP_CHECKSUM_BEGIN) / 8; // Divided by 8 to convert from bit number to byte number
 	std::cout << " Checksum: ";
 	printf("%02X:%02X\n", _packetArrayBytes[currentByte], _packetArrayBytes[currentByte + 1]);
 
 	// Urgent Pointer
-	urgentPointer = BinaryToInteger_256bits(start_bit + 144, start_bit + 160, _packetArrayBits);
+	urgentPointer = BinaryToInteger_256bits(_startBit + TCP_URGENT_POINTER_BEGIN, _startBit + TCP_URGENT_POINTER_END, _packetArrayBits);
 	std::cout << " Urgent pointer: " << urgentPointer << "\n";
 
 	// Options
 	std::cout << "\n";
 
 	if (dns)
-		DNS(start_bit + 160);
+		DNS(_startBit + TCP_START_DNS_OFFSET, _packetArrayBytes, _packetArrayBits);
 }
 
-void Packet::UDP(const unsigned int start_bit, const unsigned int& next_protocol, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits)
+void Packet::UDP(const unsigned int _startBit, const unsigned int& next_protocol, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits)
 {
+	unsigned int sourcePort(0), destinationPort(0), currentByte(0);
+	bool dns;
+
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
+	std::cout << " [UDP]\n";
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
+
+	// Source Port
+	sourcePort = BinaryToInteger_256bits(_startBit, _startBit + UDP_SOURCE_PORT_SIZE, _packetArrayBits);
+
+	std::cout << " (Source port: " << sourcePort << ")-----------------\n";
+
+	dns = TPC_UDP_PortCategoryEvaluation(sourcePort);
+	dns = false; // If the source port for any reason is dns, is not going to be printed because this is the source port.
+
+	// Destination Port
+	destinationPort = BinaryToInteger_256bits(_startBit + UDP_DESTINATION_PORT_BEGIN, _startBit + UDP_DESTINATION_PORT_END, _packetArrayBits);
+
+	std::cout << " (Destination port: " << destinationPort << ")-------------------\n";
+
+	dns = TPC_UDP_PortCategoryEvaluation(destinationPort);
+
+	// Length
+	currentByte = (_startBit + UDP_LENGTH_BEGIN) / 8; // Divided by 8 to convert from bit number to byte number
+	std::cout << " Length: ";
+	printf("%02X:%02X\n", _packetArrayBytes[currentByte], _packetArrayBytes[currentByte + 1]);
+
+	// Checksum
+	currentByte = (_startBit + UDP_CHECKSUM_BEGIN) / 8; // Divided by 8 to convert from bit number to byte number
+	std::cout << " Checksum: ";
+	printf("%02X:%02X\n", _packetArrayBytes[currentByte], _packetArrayBytes[currentByte + 1]);
+
+	std::cout << "\n";
+
+	if (dns)
+		DNS(_startBit + UDP_START_DNS_OFFSET, _packetArrayBytes, _packetArrayBits);
 }
 
-void Packet::DNS(const unsigned int start_bit)
+void Packet::DNS(const unsigned int _startBit, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits)
 {
+	unsigned int currentByte(0), QR(0), opCode(0), AA(0), TC(0), RD(0), RA(0), AD(0), CD(0), rCode(0);
+	unsigned int QDcount(0), ANcount(0), NScount(0), ARcount(0), dClass(0), f_type(0), currentBit(0);
+	std::string domainName;
+
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREAQUA);
+	std::cout << " [DNS]\n";
+	SetConsoleTextAttribute(STDOUT_HANDLE, BACKBLACK_FOREWHITE);
+
+	// ID
+	currentByte = (_startBit) / 8; // Divided by 8 to convert from bit number to byte number
+	std::cout << " ID: ";
+	printf("%02X:%02X\n", _packetArrayBytes[currentByte], _packetArrayBytes[currentByte + 1]);
+
+	// Flags
+	std::cout << " Flags: ---------------------------\n";
+
+	QR = BinaryToInteger_256bits(_startBit + DNS_QR_BEGIN, _startBit + DNS_QR_END, _packetArrayBits);
+	if (QR)
+		std::cout << " Description: Answer\n";
+	else
+		std::cout << " Description: Question\n";
+
+	opCode = BinaryToInteger_256bits(_startBit + DNS_OP_CODE_BEGIN, _startBit + DNS_OP_CODE_END, _packetArrayBits);
+	if (opCode == DNS_OP_CODE_STANDARD)
+		std::cout << " QUERY - Standard query\n";
+	else if (opCode == DNS_OP_CODE_INVERSE)
+		std::cout << " IQUERY- Inverse query\n";
+	else if (opCode == DNS_OP_CODE_STATUS)
+		std::cout << " STATUS - Service status query\n";
+
+	AA = BinaryToInteger_256bits(_startBit + DNS_AA_BEGIN, _startBit + DNS_AA_END, _packetArrayBits);
+	if (AA)
+		std::cout << " Authoritative\n";
+	else
+		std::cout << " Not Authoritative\n";
+
+	TC = BinaryToInteger_256bits(_startBit + DNS_TC_BEGIN, _startBit + DNS_TC_END, _packetArrayBits);
+	if (TC)
+		std::cout << " Truncated message\n";
+	else
+		std::cout << " Not truncated message\n";
+
+	RD = BinaryToInteger_256bits(_startBit + DNS_RD_BEGIN, _startBit + DNS_RD_END, _packetArrayBits);
+	if (RD)
+		std::cout << " Recursive\n";
+	else
+		std::cout << " Not recursive\n";
+
+	RA = BinaryToInteger_256bits(_startBit + DNS_RA_BEGIN, _startBit + DNS_RA_END, _packetArrayBits);
+	if (RA)
+		std::cout << " Recursive query available\n";
+	else
+		std::cout << " Recursive query not available\n";
+
+	std::cout << " -------------------------------------\n";
+
+	// Return Code
+	rCode = BinaryToInteger_256bits(_startBit + DNS_RETURN_CODE_BEGIN, _startBit + DNS_RETURN_CODE_END, _packetArrayBits);
+	std::cout << " Return code: ";
+
+	switch (rCode)
+	{
+	case DNS_RETURN_CODE_NO_ERROR:
+		std::cout << " No error\n";
+		break;
+	case DNS_RETURN_CODE_FORMAT_ERROR:
+		std::cout << " Format error\n";
+		break;
+	case DNS_RETURN_CODE_SERVER_ERROR:
+		std::cout << " Server error\n";
+		break;
+	case DNS_RETURN_CODE_NAME_ERROR:
+		std::cout << " Name error\n";
+		break;
+	case DNS_RETURN_CODE_NOT_IMPLEMENTED:
+		std::cout << " Not implemented\n";
+		break;
+	case DNS_RETURN_CODE_REJECTED:
+		std::cout << " Rejected\n";
+		break;
+	default:
+		std::cout << " Unknown\n";
+		break;
+	}
+
+	// Counters
+	QDcount = BinaryToInteger_256bits(_startBit + DNS_QD_BEGIN, _startBit + DNS_QD_END, _packetArrayBits);
+	std::cout << " Number of RRs on Question: " << QDcount << "\n";
+
+	ANcount = BinaryToInteger_256bits(_startBit + DNS_AN_BEGIN, _startBit + DNS_AN_END, _packetArrayBits);
+	std::cout << " Number of RRs on Answer: " << ANcount << "\n";
+
+	NScount = BinaryToInteger_256bits(_startBit + DNS_NS_BEGIN, _startBit + DNS_NS_END, _packetArrayBits);
+	std::cout << " Number of RRs on Authority: " << NScount << "\n";
+
+	ARcount = BinaryToInteger_256bits(_startBit + DNS_AR_BEGIN, _startBit + DNS_AR_END, _packetArrayBits);
+	std::cout << " Number of RRs on Additional Records: " << ARcount << "\n";
+
+	// Questions
+	for (unsigned int i(0); i < QDcount; ++i)
+		DNS_Question_Fields_Evalaution(_startBit + DNS_QUESTION_ANSWER, _packetArrayBytes, _packetArrayBits);
+
+	// Answers
+	for (unsigned int i(0); i < ANcount; ++i)
+		DNS_Answer_Fields_Evalaution(_startBit + DNS_QUESTION_ANSWER, _packetArrayBytes, _packetArrayBits);
+
+	std::cout << "\n";
 }
 
-bool Packet::TPC_UDP_PortCategoryEvaluation(const unsigned int& port) const
+bool Packet::TPC_UDP_PortCategoryEvaluation(const unsigned int& _port) const
 {
-	return false;
+    bool dns = false;
+
+	if (_port < WELL_KNOWN_PORT_SUPERIOR_LIMIT)
+		std::cout << " Port category: Well known port\n";
+	else if (_port > REGISTERED_PORT_INFERIOR_LIMIT && _port < REGISTERED_PORT_SUPERIOR_LIMIT)
+		std::cout << " Port category: Registered port\n";
+	else
+		std::cout << " Port category: Dynamic or private port\n";
+
+	switch (_port)
+	{
+	case SFTP_PTCP: 
+		std::cout << " Service: FTP\n" << " Protocol: TCP\n";
+		break;
+	case SFTP_PUDP:
+		std::cout << " Service: FTP\n" << " Protocol: UDP\n";
+		break;
+	case SSSH_PTCP:
+		std::cout << " Service: SSH\n" << " Protocol: TCP\n";
+		break;
+	case STELNET_PTCP:
+		std::cout << " Service: TELNET\n" << " Protocol: TCP\n";
+		break;
+	case SSSMTP_PTCP:
+		std::cout << " Service: SSMTP\n" << " Protocol: TCP\n";
+		break;
+	case SDNS_PTCP_UDP:
+		std::cout << " Service: DNS\n" << " Protocol: TCP / UDP\n";
+		dns = true;
+		break;
+	case SDHCP_UDP:
+		std::cout << " Service: DHCP\n" << " Protocol: UDP\n";
+		break;
+	case SDHCP_UDP_1:
+		std::cout << " Service: DHCP\n" << " Protocol: UDP\n";
+		break;
+	case STFTP_PUDP:
+		std::cout << " Service: TFTP\n" << " Protocol: UDP\n";
+		break;
+	case SHTTP_PTCP:
+		std::cout << " Service: HTTP\n" << " Protocol: TCP\n";
+		break;
+	case SPOP3_PTCP:
+		std::cout << " Service: POP3\n" << " Protocol: TCP\n";
+		break;
+	case SIMAP_PTCP:
+		std::cout << " Service: IMAP\n" << " Protocol: TCP\n";
+		break;
+	case SHTTPS_PTCP:
+		std::cout << " Service: HTTPS\n" << " Protocol: TCP\n";
+		break;
+	case SIMAPSSL_PTCP:
+		std::cout << " Service: IMAP SSL\n" << " Protocol: TCP\n";
+		break;
+	case SPOPSSL_PTCP:
+		std::cout << " Service: POP SSL\n" << " Protocol: TCP\n";
+		break;
+	default:
+		std::cout << " Service: Unknown\n" << " Protocol: Unknown\n";
+		break;
+	}
+
+	return dns;
 }
 
-void Packet::DNS_Question_Fields_Evalaution(const unsigned int start_bit)
+void Packet::DNS_Question_Fields_Evalaution(const unsigned int _startBit, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits)
 {
+	unsigned int dClass(0), type(0), currentBit = _startBit;
+	unsigned int currentByte = SIZE_ETHERNET + (currentBit / 8);
+	std::string domainName;
+
+	unsigned int letters(0);
+	unsigned char aux;
+	bool domainIncomplete = true;
+
+	while (domainIncomplete) {
+		letters = BinaryToInteger_256bits(currentBit, currentBit + DNS_LETTER_FIELD_SIZE, _packetArrayBits);
+
+		if (letters != 0) {
+			for (unsigned int j(0); j < letters; ++j) {
+				++currentByte;
+				aux = ByteToChar(currentByte, _packetArrayBytes);
+				domainName.push_back(aux);
+				currentBit += DNS_LETTER_FIELD_SIZE;
+			}
+			domainName.push_back("."[0]);
+			++currentByte;
+			currentBit += DNS_LETTER_FIELD_SIZE;
+		}
+		else {
+			domainName.pop_back();
+			currentBit += DNS_LETTER_FIELD_SIZE;
+			domainIncomplete = false;
+		}
+	}
+
+	std::cout << " Domain name: " << domainName << "\n";
+
+	type = BinaryToInteger_256bits(currentBit, currentBit + DNS_TYPE_FIELD_SIZE, _packetArrayBits);
+	currentBit += DNS_TYPE_FIELD_SIZE;
+
+	switch (type)
+	{
+	case DNS_TYPE_A:
+		std::cout << " Type: A\n";
+		break;
+	case DNS_TYPE_CNAME:
+		std::cout << " Type: CNAME\n";
+		break;
+	case DNS_TYPE_HINFO:
+		std::cout << " Type: HINFO\n";
+		break;
+	case DNS_TYPE_MX:
+		std::cout << " Type: MAIL EXCHANGE\n";
+		break;
+	case DNS_TYPE_NS:
+		std::cout << " Type: NS\n";
+		break;
+	default:
+		std::cout << " Type: Unknown\n";
+		break;
+	}
+
+	dClass = BinaryToInteger_256bits(currentBit, currentBit + DNS_CLASS_FIELD_SIZE, _packetArrayBits);
+
+	if (dClass == DNS_CLASS_INTERNET_PROTOCOLS)
+		std::cout << " Class: IN - Internet protocols\n";
+	else if (dClass == DNS_CLASS_CHAOTIC_SYSTEM)
+		std::cout << " Class: CH - Chaotic system\n";
+	else
+		std::cout << " Class: Unknown\n";
 }
 
-void Packet::DNS_Answer_Fields_Evalaution(const unsigned int start_bit)
+void Packet::DNS_Answer_Fields_Evalaution(const unsigned int _startBit, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits)
 {
+	unsigned int dClass(0), type(0), ttl(0), currentBit(_startBit);
+	unsigned int currentByte = SIZE_ETHERNET + (currentBit / 8);
+	std::string domainName;
+
+	unsigned int letters(0);
+	unsigned char aux;
+	bool domainIncomplete = true;
+
+	while (domainIncomplete) {
+		letters = BinaryToInteger_256bits(currentBit, currentBit + DNS_LETTER_FIELD_SIZE, _packetArrayBits);
+
+		if (letters != 0) {
+			for (unsigned int j(0); j < letters; ++j) {
+				++currentByte;
+				aux = ByteToChar(currentByte, _packetArrayBytes);
+				domainName.push_back(aux);
+				currentBit += DNS_LETTER_FIELD_SIZE;
+			}
+			domainName.push_back("."[0]);
+			++currentByte;
+			currentBit += DNS_LETTER_FIELD_SIZE;
+		}
+		else {
+			domainName.pop_back();
+			currentBit += DNS_LETTER_FIELD_SIZE;
+			domainIncomplete = false;
+		}
+	}
+
+	std::cout << " Domain name: " << domainName << "\n";
+
+	type = BinaryToInteger_256bits(currentBit, currentBit + DNS_TYPE_FIELD_SIZE, _packetArrayBits);
+	currentBit += DNS_TYPE_FIELD_SIZE;
+
+	switch (type)
+	{
+	case DNS_TYPE_A:
+		std::cout << " Type: A\n";
+		break;
+	case DNS_TYPE_CNAME:
+		std::cout << " Type: CNAME\n";
+		break;
+	case DNS_TYPE_HINFO:
+		std::cout << " Type: HINFO\n";
+		break;
+	case DNS_TYPE_MX:
+		std::cout << " Type: MAIL EXCHANGE\n";
+		break;
+	case DNS_TYPE_NS:
+		std::cout << " Type: NS\n";
+		break;
+	default:
+		std::cout << " Type: Unknown\n";
+		break;
+	}
+
+	dClass = BinaryToInteger_256bits(currentBit, currentBit + DNS_CLASS_FIELD_SIZE, _packetArrayBits);
+
+	if (dClass == DNS_CLASS_INTERNET_PROTOCOLS)
+		std::cout << " Class: IN - Internet protocols\n";
+	else if (dClass == DNS_CLASS_CHAOTIC_SYSTEM)
+		std::cout << " Class: CH - Chaotic system\n";
+	else
+		std::cout << " Class: Unknown\n";
+
+	ttl = 0;
+	std::cout << " Time to live: " << ttl << "\n";
+
+	printf(" Data length: %02X:%02X", _packetArrayBytes[DNS_TIME_TO_LIVE_BYTE1], _packetArrayBytes[DNS_TIME_TO_LIVE_BYTE2]);
+
+	std::cout << " Register type: \n";
 }

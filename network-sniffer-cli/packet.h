@@ -1,10 +1,5 @@
 #pragma once
 
-#pragma warning(disable:4244)
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
-#define WINPCAP_H_INCLUDED
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <iostream> 
 #include <string>
 #include <vector>
@@ -12,8 +7,7 @@
 #include <bitset>
 #include <time.h>
 #include <Windows.h>
-#include "packet-segmentation-enums.h"
-//#include <pcap/pcap.h>
+#include "enums.h"
 
 class Packet {
 public:
@@ -29,13 +23,13 @@ public:
 	void ARP_RARP(std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
 	void IPv6(std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
 	void ICMPv6(std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
-	void TCP(const unsigned int start_bit, const unsigned int& next_protocol, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
-	void UDP(const unsigned int start_bit, const unsigned int& next_protocol, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
-	void DNS(const unsigned int start_bit);
+	void TCP(const unsigned int _startBit, const unsigned int& next_protocol, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
+	void UDP(const unsigned int _startBit, const unsigned int& next_protocol, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
+	void DNS(const unsigned int _startBit, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
 
 	//void PCAP_Listener();
 
 	bool TPC_UDP_PortCategoryEvaluation(const unsigned int& port) const;
-	void DNS_Question_Fields_Evalaution(const unsigned int start_bit);
-	void DNS_Answer_Fields_Evalaution(const unsigned int start_bit);
+	void DNS_Question_Fields_Evalaution(const unsigned int _startBit, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
+	void DNS_Answer_Fields_Evalaution(const unsigned int _startBit, std::vector<unsigned char>& _packetArrayBytes, std::vector<unsigned char>& _packetArrayBits);
 };

@@ -86,13 +86,16 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;WPCAP;HAVE_REMOTE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\Santiago\Documents\GitHub\network-sniffer-cli\Dependencies\pcap\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\Santiago\Documents\GitHub\network-sniffer-cli\Dependencies\pcap\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wpcap.lib;Packet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,15 +143,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="adapter_packet.cpp" />
     <ClCompile Include="hmi.cpp" />
-    <ClCompile Include="local-packet.cpp" />
+    <ClCompile Include="local_packet.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="network_adapter.cpp" />
     <ClCompile Include="packet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="adapter_packet.h" />
     <ClInclude Include="hmi.h" />
-    <ClInclude Include="local-packet.h" />
-    <ClInclude Include="packet-segmentation-enums.h" />
+    <ClInclude Include="local_packet.h" />
+    <ClInclude Include="enums.h" />
+    <ClInclude Include="network_adapter.h" />
     <ClInclude Include="packet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -5,7 +5,9 @@
 #include <filesystem>
 #include <vector>
 #include <conio.h>
-#include "local-packet.h"
+#include <pcap.h>
+#include "local_packet.h"
+#include "adapter_packet.h"
 
 const int OPTIONS_SIZE = 4;
 
